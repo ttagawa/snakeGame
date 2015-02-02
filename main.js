@@ -9,6 +9,12 @@ function buildSn(){
 		snakeArray.push({x:i,y:0});
 	}
 }
+buildSn();
+var scoreBox = new TextBox();
+scoreBox.x = 5;
+scoreBox.y = 5;
+scoreBox.fontSize = 32;
+scoreBox.text = "Score: "+score;
 var food = new Sprite();
 food.x=size*Math.round(Math.random()*(800/size));
 food.y=food.x=size*Math.round(Math.random()*(600/size));;
@@ -16,19 +22,12 @@ food.width=size;
 food.height=size;
 food.image=Textures.load("https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcRaVNqGdvSMitbimeaVzUnxRmIUjCCc_4Jq-AIAOu_YY0-FkL9b");
 world.addChild(food);
+world.addChild(scoreBox);
 function moveFood(){
 	food.x=size*Math.round(Math.random()*(Canvas.width-size)/size);
 	food.y=size*Math.round(Math.random()*(canvas.height-size)/size);
 }
 function drawSnake(){
-	var canvas = document.getElementById('canvas');
-	var ctx = canvas.getContext('2d');
-	for(var i=0;i<snakeArray.length;i++){
-		ctx.fillRect(snakeArray[i].x,snakeArray[i].y,size,size);
-	}
+	
 }
-/*world.update=function(d){
-	drawSnake();
-}
-buildSn();
-drawSnake();*/
+
