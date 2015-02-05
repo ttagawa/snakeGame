@@ -1,12 +1,13 @@
 use2D = true;
 var size = 10;
-var snakeArray=[];
+var snakeArray=new Array();
 var score = 0;
-var length=2;
+var length=3;
 
 function buildSn(){
 	for(var i=length;i>0;i--){
-		snakeArray.push({x:i,y:0});
+		var sn=new snakeBlock(i,10);
+		snakeArray.push(sn);
 	}
 }
 buildSn();
@@ -27,7 +28,23 @@ function moveFood(){
 	food.x=size*Math.round(Math.random()*(Canvas.width-size)/size);
 	food.y=size*Math.round(Math.random()*(canvas.height-size)/size);
 }
-function drawSnake(){
-	
+function snakeBlock(x,y){
+	this.Sprite=new Sprite();
+	this.Sprite.x=x*size;
+	this.Sprite.y=y*size;
+	this.Sprite.width=size;
+	this.Sprite.height=size;
+	this.Sprite,direction="right";
+	this.Sprite.image=Textures.load("snaketemp.jpg");	 
+	return this.Sprite;
 }
-
+snakeBlock.prototype=Object.create(Sprite.prototype);
+Array.prototype.addBlocks=function(){
+	for(var i =0;i<this.length;i++){
+		world.addChild(this[i]);
+	}
+};
+//Array.prototype.move=function(){
+	//
+//}
+snakeArray.addBlocks();
