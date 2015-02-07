@@ -46,14 +46,19 @@ Array.prototype.addBlocks=function(){
 		world.addChild(this[i]);
 	}
 };
+function checkCollision(hx,hy,snakeArray){
+	for(var i=0;i<snakeArray.length;i++){
+		if(snakeArray[i].x==hx&&snakeArray[i].y==hy){
+			return true;
+		}
+	}
+	return false;
+}
 snakeArray.addBlocks();
 gInput.addBool(65, "left");
 gInput.addBool(68, "right");
 gInput.addBool(83, "down");
 gInput.addBool(87, "up");
-//var snake = {
-	//body: snakeArray
-//};
 function moveSnake(){
 	if(gInput.left){
 		if(dir!==68){
@@ -90,7 +95,9 @@ function moveSnake(){
 		hy-=size;
 	}
 	console.log(hx,hy);
-	//if(hx<0||hx>600||hy<0||hy>600)
+	if(checkCollision(hx,hy,snakeArray)==true||hx<0||hx>600||hy<0||hy>600){
+			window.location.reload();ss
+	}
 	if(hx==food.x&&hy==food.y){
 		var end=new snakeBlock(hx/size,hy/size);
 		console.log(end);
@@ -100,11 +107,10 @@ function moveSnake(){
 		snakeArray.unshift(end);
 		moveFood();
 		console.log(snakeArray);
-	}else{
+		}else{
 		var en=snakeArray.pop();
 		en.x=hx;
 		en.y=hy;
-		//world.addChild(end);
 		snakeArray.unshift(en);
 	}
 }
