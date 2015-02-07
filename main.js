@@ -1,5 +1,5 @@
 use2D = true;
-var size = 10;
+var size = 20;
 var snakeArray=new Array();
 var score = 0;
 var length=3;
@@ -41,6 +41,21 @@ function snakeBlock(x,y){
 	return this.Sprite;
 }
 snakeBlock.prototype=Object.create(Sprite.prototype);
+var rottenFood=new Sprite();
+rottenFood.x=size*Math.round(Math.random()*((canSize-size)/size));
+rottenFood.y=size*Math.round(Math.random()*((canSize-size)/size));
+rottenFood.width=size;
+rottenFood.height=size;
+rottenFood.image=Textures.load("images/rottenApple.jpg");
+world.addChild(rottenFood);
+function hideBadFood(){
+	rottenFood.x*=canSize;
+	rottenFood.y*=canSize;
+}
+function moveBadFood(){
+	rottenFood.x=size*Math.round(Math.random()*((canSize-size)/size));
+	rottenFood.y=size*Math.round(Math.random()*((canSize-size)/size));
+}
 Array.prototype.addBlocks=function(){
 	for(var i =0;i<this.length;i++){
 		world.addChild(this[i]);
@@ -95,18 +110,22 @@ function moveSnake(){
 		hy-=size;
 	}
 	console.log(hx,hy);
-	if(checkCollision(hx,hy,snakeArray)==true||hx<0||hx>600||hy<0||hy>600){
+	if(checkCollision(hx,hy,snakeArray)==true||hx<0||hx>600-size||hy<0||hy>600-size){
 			window.location.reload();ss
 	}
+	if(hx==rottenFood.x&&hy==rottenFood.y){
+			score--;
+			scoreBox.text="Score: "+score;
+			world.removeChild(snakeArray.pop());
+			hideBadFood();
+		}
 	if(hx==food.x&&hy==food.y){
 		var end=new snakeBlock(hx/size,hy/size);
-		console.log(end);
 		score++;
 		scoreBox.text="Score: "+score;
 		world.addChild(end);
 		snakeArray.unshift(end);
 		moveFood();
-		console.log(snakeArray);
 		}else{
 		var en=snakeArray.pop();
 		en.x=hx;
@@ -115,3 +134,5 @@ function moveSnake(){
 	}
 }
 setInterval(moveSnake,60);
+setInterval(hideBadFood,10000);
+setInterval(moveBadFood,20001);
