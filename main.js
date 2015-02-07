@@ -3,8 +3,10 @@ var size = 10;
 var snakeArray=new Array();
 var score = 0;
 var length=3;
+var dir;
 
 function buildSn(){
+	dir=68;
 	for(var i=length;i>0;i--){
 		var sn=new snakeBlock(i,10);
 		snakeArray.push(sn);
@@ -43,40 +45,48 @@ Array.prototype.addBlocks=function(){
 		world.addChild(this[i]);
 	}
 };
-/*Array.prototype.move=function(){
-	var head=this[0];
-	this.pop();
-	this.unshift(new snakeBlock(head.x+1,head.y));
-}*/
 snakeArray.addBlocks();
 gInput.addBool(65, "left");
 gInput.addBool(68, "right");
 gInput.addBool(83, "down");
 gInput.addBool(87, "up");
 var snake = {
-	direction: 68,
 	body: snakeArray
 };
 function moveSnake(){
+	if(gInput.left){
+		if(dir!=65||dir!=68){
+		dir=65;
+		}
+	}
+	if(gInput.right){
+		if(dir!=65||dir!=68){
+			dir=68;
+		}
+	}
+	if(gInput.down){
+		if(dir!=83||dir!=87){
+			dir=83;
+		}
+	}
+	if(gInput.up){
+		if(dir!=83||dir!=87){
+			dir=87;
+		}
+	}
 	var hx=snake.body[0].x;
 	var hy=snake.body[0].y;
-	if(snake.direction=68){//right
-		hx+=10;
-	//	var head=snake.body[0];
-		//world.removeChild(snake.body.pop());
-		//var newB= new snakeBlock(head.x+10,head.y)
-		//world.addChild(newB);
-		//snake.body.unshift(newB);
-		//console.log(snake.body);
+	if(dir==68){//right
+		hx+=size;
 	}
-	else if(snake.direction=65){//left
-		hx-=10;
+	else if(dir==65){//left
+		hx-=size;
 	}
-	else if(snake.direction=83){//down
-		hy+=10;
+	else if(dir==83){//down
+		hy+=size;
 	}
-	else if(snake.direction=87){//up
-		hy-=10;
+	else if(dir==87){//up
+		hy-=size;
 	}
 	if(hx==food.x&&hy==food.y){
 		var end=new snakeBlock(hx,hy);
@@ -90,17 +100,4 @@ function moveSnake(){
 	world.addChild(end);
 	snakeArray.unshift(end);
 }
-//snake.body.unshift(new snakeBlock(80,100));
-//console.log(snake.body);
-/*world.update = function(d){
-	if(snake.direction==68){
-		var head=snake.body[0];
-		world.removeChild(snake.body.pop());
-		var newB= new snakeBlock(head.x+10,head.y)
-		world.addChild(newB);
-		snake.body.unshift(newB);
-		console.log(snake.body);
-	}
-}*/
-
 setInterval(moveSnake,30);
