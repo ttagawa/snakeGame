@@ -4,6 +4,7 @@ var snakeArray=new Array();
 var score = 0;
 var length=3;
 var dir;
+canSize=600;
 
 function buildSn(){
 	dir=68;
@@ -19,16 +20,16 @@ scoreBox.y = 5;
 scoreBox.fontSize = 32;
 scoreBox.text = "Score: "+score;
 var food = new Sprite();
-food.x=size*Math.round(Math.random()*(800/size));
-food.y=food.x=size*Math.round(Math.random()*(600/size));;
+food.x=size*Math.round(Math.random()*((canSize-size)/size));
+food.y=food.x=size*Math.round(Math.random()*((canSize-size)/size));
 food.width=size;
 food.height=size;
 food.image=Textures.load("images/apple.png");
 world.addChild(food);
 world.addChild(scoreBox);
 function moveFood(){
-	food.x=size*Math.round(Math.random()*(Canvas.width-size)/size);
-	food.y=size*Math.round(Math.random()*(canvas.height-size)/size);
+	food.x=size*Math.round(Math.random()*(canSize-size)/size);
+	food.y=size*Math.round(Math.random()*(canSize-size)/size);
 }
 function snakeBlock(x,y){
 	this.Sprite=new Sprite();
@@ -50,32 +51,32 @@ gInput.addBool(65, "left");
 gInput.addBool(68, "right");
 gInput.addBool(83, "down");
 gInput.addBool(87, "up");
-var snake = {
-	body: snakeArray
-};
+//var snake = {
+	//body: snakeArray
+//};
 function moveSnake(){
 	if(gInput.left){
-		if(dir!=65||dir!=68){
+		if(dir!==68){
 		dir=65;
 		}
 	}
 	if(gInput.right){
-		if(dir!=65||dir!=68){
+		if(dir!==65){
 			dir=68;
 		}
 	}
 	if(gInput.down){
-		if(dir!=83||dir!=87){
+		if(dir!==87){
 			dir=83;
 		}
 	}
 	if(gInput.up){
-		if(dir!=83||dir!=87){
+		if(dir!==83){
 			dir=87;
 		}
 	}
-	var hx=snake.body[0].x;
-	var hy=snake.body[0].y;
+	var hx=snakeArray[0].x;
+	var hy=snakeArray[0].y;
 	if(dir==68){//right
 		hx+=size;
 	}
@@ -88,16 +89,23 @@ function moveSnake(){
 	else if(dir==87){//up
 		hy-=size;
 	}
+	console.log(hx,hy);
+	//if(hx<0||hx>600||hy<0||hy>600)
 	if(hx==food.x&&hy==food.y){
-		var end=new snakeBlock(hx,hy);
+		var end=new snakeBlock(hx/size,hy/size);
+		console.log(end);
 		score++;
+		scoreBox.text="Score: "+score;
+		world.addChild(end);
+		snakeArray.unshift(end);
 		moveFood();
+		console.log(snakeArray);
 	}else{
-		var end=snakeArray.pop();
-		end.x=hx;
-		end.y=hy;
+		var en=snakeArray.pop();
+		en.x=hx;
+		en.y=hy;
+		//world.addChild(end);
+		snakeArray.unshift(en);
 	}
-	world.addChild(end);
-	snakeArray.unshift(end);
 }
-setInterval(moveSnake,30);
+setInterval(moveSnake,60);
