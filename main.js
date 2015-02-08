@@ -4,6 +4,8 @@ var snakeArray=new Array();
 var score = 0;
 var length=3;
 var dir;
+var poo= new Array();
+var maxPoo= 10;
 canSize=600;
 
 function buildSn(){
@@ -41,6 +43,7 @@ function snakeBlock(x,y){
 	return this.Sprite;
 }
 snakeBlock.prototype=Object.create(Sprite.prototype);
+
 var rottenFood=new Sprite();
 rottenFood.x=size*Math.round(Math.random()*((canSize-size)/size));
 rottenFood.y=size*Math.round(Math.random()*((canSize-size)/size));
@@ -111,14 +114,20 @@ function moveSnake(){
 	}
 	console.log(hx,hy);
 	if(checkCollision(hx,hy,snakeArray)==true||hx<0||hx>600-size||hy<0||hy>600-size){
-			window.location.reload();ss
+			window.location.reload();
 	}
 	if(hx==rottenFood.x&&hy==rottenFood.y){
+		if(snakeArray.length>1){
 			score--;
 			scoreBox.text="Score: "+score;
 			world.removeChild(snakeArray.pop());
 			hideBadFood();
+		}else{
+			score--;
+			scoreBox.text="Score: "+score;
+			hideBadFood();
 		}
+	}
 	if(hx==food.x&&hy==food.y){
 		var end=new snakeBlock(hx/size,hy/size);
 		score++;
