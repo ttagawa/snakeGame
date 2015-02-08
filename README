@@ -1,0 +1,5 @@
+Tyler Tagawa
+
+This is my version of the classic snake game.  Use WASD for movement controls.  Eating the good apple increments score by 1 and snake length by 1.  Eating the rotten apple decrements the score by 1 and snake length by 1.  If any part of the snake collides with the wall, itself, or the raining poop then the game starts over.
+
+Link to brine.js = http://www.jar42.com/brine/engine/brine.js
