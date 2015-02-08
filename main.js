@@ -5,14 +5,33 @@ var score = 0;
 var length=3;
 var dir;
 var poo= new Array();
-var maxPoo= 10;
+var maxPoo=4;
 canSize=600;
-
 function buildSn(){
 	dir=68;
 	for(var i=length;i>0;i--){
 		var sn=new snakeBlock(i,10);
 		snakeArray.push(sn);
+	}
+}
+for(var i=0;i<maxPoo;i++){
+	var p=new Sprite();
+	p.image=Textures.load("images/poop.jpg");
+	p.x=size*Math.round(Math.random()*((canSize-size)/size));
+	p.y=0;
+	p.width=size;
+	p.height=size;
+	poo.push(p);
+	world.addChild(p);
+}
+
+function rainPoo(){
+	for(var i=0;i<poo.length;i++){
+		poo[i].y+=size;
+		if(poo[i].y>canSize){
+			poo[i].x=size*Math.round(Math.random()*((canSize-size)/size));
+			poo[i].y=0;
+		}
 	}
 }
 buildSn();
@@ -72,6 +91,16 @@ function checkCollision(hx,hy,snakeArray){
 	}
 	return false;
 }
+function shitOnMe(snakeArray, poo){
+	for(var i=0;i<snakeArray.length;i++){
+		for(var j=0;j<poo.length;j++){
+			if(snakeArray[i].x==poo[j].x&&snakeArray[i].y==poo[j].y){
+				return true;
+			}
+		}
+	}
+	return false;
+}
 snakeArray.addBlocks();
 gInput.addBool(65, "left");
 gInput.addBool(68, "right");
@@ -112,8 +141,7 @@ function moveSnake(){
 	else if(dir==87){//up
 		hy-=size;
 	}
-	console.log(hx,hy);
-	if(checkCollision(hx,hy,snakeArray)==true||hx<0||hx>600-size||hy<0||hy>600-size){
+	if(checkCollision(hx,hy,snakeArray)==true||shitOnMe(snakeArray,poo)==true||hx<0||hx>600-size||hy<0||hy>600-size){
 			window.location.reload();
 	}
 	if(hx==rottenFood.x&&hy==rottenFood.y){
@@ -145,3 +173,4 @@ function moveSnake(){
 setInterval(moveSnake,60);
 setInterval(hideBadFood,10000);
 setInterval(moveBadFood,20001);
+setInterval(rainPoo,100);
